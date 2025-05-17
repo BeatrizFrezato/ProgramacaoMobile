@@ -8,8 +8,6 @@ import {
 } from 'react-native';
 import {PaperProvider, TextInput} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
-import {signInWithEmailAndPassword} from 'firebase/auth';
-import {auth} from '../firebaseConfig';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -22,19 +20,29 @@ const Login = () => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em.trim());
   }
 
-  async function entrar() {
+  function validarSenha(pw) {
+    return pw.trim().length >= 6;
+  }
+
+  function entrar() {
     setMensagemErro('');
+
     if (!validarEmail(email)) {
       setMensagemErro('Digite um email válido.');
       return;
     }
 
+    if (!validarSenha(senha)) {
+      setMensagemErro('A senha deve ter ao menos 6 caracteres.');
+      return;
+    }
+
+    
     try {
-      await signInWithEmailAndPassword(auth, email.trim(), senha);
       navigation.replace('Home');
     } catch (err) {
-      setMensagemErro('Email e/ou senha inválidos.');
-      console.error('Erro no Firebase:', err);
+      setMensagemErro('Ocorreu um erro ao entrar. Tente novamente.');
+      console.error('Erro na navegação:', err);
     }
   }
 
@@ -48,7 +56,7 @@ const Login = () => {
         )}
 
         <View style={styles.inputContainer}>
-          <Text style={styles.email}>E-mail</Text>
+          <Text style={styles.label}>E-mail</Text>
           <TextInput
             style={styles.input}
             placeholder="Digite seu e-mail"
@@ -61,7 +69,7 @@ const Login = () => {
             }}
           />
 
-          <Text style={styles.email}>Senha</Text>
+          <Text style={styles.label}>Senha</Text>
           <TextInput
             style={styles.input}
             placeholder="Digite sua senha"
@@ -97,15 +105,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#372775',
     padding: 20,
   },
-  container_layout: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 30,
-  },
-  layout: {
-    alignItems: 'center',
-  },
   text: {
     fontFamily: 'AveriaLibre-Regular',
     fontSize: 38,
@@ -115,16 +114,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     marginBottom: 20,
   },
-  container_icon: {
-    backgroundColor: '#372775',
-    padding: 6.25,
-    marginLeft: 10,
-  },
   inputContainer: {
     width: '75%',
     marginBottom: 15,
   },
-  email: {
+  label: {
     fontFamily: 'AveriaLibre-Regular',
     fontSize: 16,
     fontWeight: '400',
@@ -139,32 +133,7 @@ const styles = StyleSheet.create({
     color: '#3F92C5',
     marginBottom: 15,
   },
-  outroButton1: {
-    fontFamily: 'AveriaLibre-Regular',
-    fontSize: 36,
-    fontWeight: '400',
-    paddingVertical: 4,
-    borderWidth: 1,
-    backgroundColor: '#419ED7',
-    width: '75%',
-    alignItems: 'center',
-    marginBottom: 15,
-  },
-  outroButton2: {
-    fontFamily: 'AveriaLibre-Regular',
-    fontSize: 36,
-    fontWeight: '400',
-    paddingVertical: 4,
-    borderWidth: 1,
-    backgroundColor: '#B0CCDE',
-    width: '75%',
-    alignItems: 'center',
-    marginBottom: 25,
-  },
   button: {
-    fontFamily: 'AveriaLibre-Regular',
-    fontSize: 36,
-    fontWeight: '400',
     paddingVertical: 10,
     borderWidth: 1,
     backgroundColor: '#37BD6D',
