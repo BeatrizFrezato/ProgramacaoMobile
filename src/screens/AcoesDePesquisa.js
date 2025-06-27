@@ -72,5 +72,4 @@ const estilos = StyleSheet.create({
         alignItems: 'center'
     }
 })
-
 export default AcoesDePesquisa;
