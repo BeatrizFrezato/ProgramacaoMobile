@@ -23,7 +23,6 @@ const NovaConta = (props) => {
       goToLogin();
     }
   };
-  
 
   const handleEmail = (text) => { 
     setEmail(text); 
