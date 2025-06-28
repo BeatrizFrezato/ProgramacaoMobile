@@ -6,8 +6,6 @@ import Botao from "../components/Botao"
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth_mod } from "../firebase/configAuth";
 
-/** conexão com o firebase para o cadastro de usuario e verificação de vários erro que podem ocorre (tratamento de exceção)*/
-
 const NovaConta = () => {
     const [txtEmail, setEmail] = useState("")
     const [txtSenha, setSenha] = useState("")
