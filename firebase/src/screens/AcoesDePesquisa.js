@@ -37,6 +37,7 @@ const AcoesDePesquisa = (props) => {
 }
 
 const estilo = StyleSheet.create ({
+    
     button: {
         backgroundColor: "#312464",
         flexDirection: 'column',
